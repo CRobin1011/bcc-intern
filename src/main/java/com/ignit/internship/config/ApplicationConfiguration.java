@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.ignit.internship.model.User;
 import com.ignit.internship.repository.UserRepository;
-import com.ignit.internship.service.IgnitUserDetailsService;
+import com.ignit.internship.service.ImplUserDetailsService;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -23,7 +23,7 @@ public class ApplicationConfiguration {
     private UserRepository userRepository;
 
     @Autowired
-    private IgnitUserDetailsService userDetailsService;
+    private ImplUserDetailsService userDetailsService;
 
     @Bean
     UserDetailsService userDetailsService() throws Exception {

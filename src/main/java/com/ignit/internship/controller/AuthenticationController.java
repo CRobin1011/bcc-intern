@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ignit.internship.dto.DefaultResponse;
-import com.ignit.internship.dto.JwtTokenResponse;
-import com.ignit.internship.dto.UserLoginRequest;
-import com.ignit.internship.dto.UserRegisterRequest;
-import com.ignit.internship.model.UserPublic;
+import com.ignit.internship.dto.auth.JwtTokenResponse;
+import com.ignit.internship.dto.auth.UserLoginRequest;
+import com.ignit.internship.dto.auth.UserRegisterRequest;
+import com.ignit.internship.model.UserProfile;
 import com.ignit.internship.service.AuthenticationService;
 import com.ignit.internship.service.JwtTokenService;
 
@@ -27,7 +27,7 @@ public class AuthenticationController {
     JwtTokenService jwtTokenService;
 
     @PostMapping("/register")
-    public ResponseEntity<DefaultResponse<UserPublic>> register(@RequestBody @Valid UserRegisterRequest register) {
+    public ResponseEntity<DefaultResponse<UserProfile>> register(@RequestBody @Valid UserRegisterRequest register) {
         return ResponseEntity.ok().body(DefaultResponse.success(authenticationService.register(register)));
     }
 

@@ -8,10 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ignit.internship.dto.UserLoginRequest;
-import com.ignit.internship.dto.UserRegisterRequest;
 import com.ignit.internship.model.User;
-import com.ignit.internship.model.UserPublic;
+import com.ignit.internship.dto.auth.UserLoginRequest;
+import com.ignit.internship.dto.auth.UserRegisterRequest;
+import com.ignit.internship.model.UserProfile;
 import com.ignit.internship.repository.UserRepository;
 
 @Service
@@ -26,7 +26,7 @@ public class AuthenticationService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public UserPublic register(UserRegisterRequest register) {
+    public UserProfile register(UserRegisterRequest register) {
         User registeredUser = userRepository.save(new User(
             register.getUsername(),
             passwordEncoder.encode(register.getPassword()),
@@ -34,7 +34,7 @@ public class AuthenticationService {
             new SimpleGrantedAuthority("ROLE_USER")
         ));
 
-        return registeredUser.getUserPublic();
+        return registeredUser.getProfile();
     }
 
     public User authenticate(UserLoginRequest login) {

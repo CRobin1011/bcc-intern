@@ -1,4 +1,4 @@
-package com.ignit.internship.dto;
+package com.ignit.internship.dto.auth;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

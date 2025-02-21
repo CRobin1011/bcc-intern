@@ -47,10 +47,10 @@ public class User implements UserDetails {
 
     private Set<GrantedAuthority> authorities;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @JsonManagedReference
-    private UserPublic userPublic;
+    private UserProfile profile;
 
     @SuppressWarnings("unused")
     private User() {}
@@ -60,7 +60,7 @@ public class User implements UserDetails {
         this.password = password;
         this.email = email;
         this.authorities = new HashSet<GrantedAuthority>(Set.of(authorities));
-        this.userPublic = new UserPublic(this);
+        this.profile = new UserProfile(this);
     }
 
     public Long getId() {
@@ -110,8 +110,8 @@ public class User implements UserDetails {
         this.authorities.addAll(Set.of(authorities));
     }
 
-    public UserPublic getUserPublic() {
-        return userPublic;
+    public UserProfile getProfile() {
+        return profile;
     }
 
 }
