@@ -1,4 +1,4 @@
-package com.ignit.internship.model;
+package com.ignit.internship.model.auth;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ignit.internship.model.profile.UserProfile;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

@@ -1,8 +1,6 @@
 package com.ignit.internship.exception;
 
-import org.springframework.security.core.AuthenticationException;
-
-public class IdNotFoundException extends AuthenticationException {
+public class IdNotFoundException extends Exception {
 
     public IdNotFoundException(String msg) {
         super(msg);

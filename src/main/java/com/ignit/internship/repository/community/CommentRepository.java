@@ -1,9 +1,9 @@
-package com.ignit.internship.repository;
+package com.ignit.internship.repository.community;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ignit.internship.model.UserComment;
+import com.ignit.internship.model.community.UserComment;
 
 @Repository
 public interface CommentRepository extends CrudRepository<UserComment, Long> {}

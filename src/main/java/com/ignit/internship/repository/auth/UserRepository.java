@@ -1,11 +1,11 @@
-package com.ignit.internship.repository;
+package com.ignit.internship.repository.auth;
 
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ignit.internship.model.User;
+import com.ignit.internship.model.auth.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {

@@ -1,6 +1,8 @@
 package com.ignit.internship.dto;
 
-public class DefaultResponse<T> {
+import java.io.Serializable;
+
+public class DefaultResponse<T> implements Serializable {
 
     private boolean success;
 

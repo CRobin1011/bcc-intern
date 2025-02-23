@@ -1,4 +1,4 @@
-package com.ignit.internship.dto.thread;
+package com.ignit.internship.dto.community;
 
 public class ThreadCommentRequest {
 

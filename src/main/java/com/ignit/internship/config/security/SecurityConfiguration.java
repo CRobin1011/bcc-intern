@@ -1,9 +1,8 @@
-package com.ignit.internship.config;
+package com.ignit.internship.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,9 +14,6 @@ public class SecurityConfiguration {
     @Autowired
     JwtTokenFilter jwtTokenFilter;
 
-    @Autowired
-    AuthenticationProvider authenticationProvider;
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -28,7 +24,6 @@ public class SecurityConfiguration {
                     .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }

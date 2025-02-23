@@ -1,6 +1,5 @@
 package com.ignit.internship.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,20 +10,24 @@ import com.ignit.internship.dto.DefaultResponse;
 import com.ignit.internship.dto.auth.JwtTokenResponse;
 import com.ignit.internship.dto.auth.UserLoginRequest;
 import com.ignit.internship.dto.auth.UserRegisterRequest;
-import com.ignit.internship.model.UserProfile;
-import com.ignit.internship.service.AuthenticationService;
-import com.ignit.internship.service.JwtTokenService;
+import com.ignit.internship.model.profile.UserProfile;
+import com.ignit.internship.service.auth.AuthenticationService;
+import com.ignit.internship.service.auth.JwtTokenService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
-    @Autowired
-    AuthenticationService authenticationService;
+    
+    private final AuthenticationService authenticationService;
 
-    @Autowired
-    JwtTokenService jwtTokenService;
+    private final JwtTokenService jwtTokenService;
+
+    public AuthenticationController(final AuthenticationService authenticationService, final JwtTokenService jwtTokenService) {
+        this.authenticationService = authenticationService;
+        this.jwtTokenService = jwtTokenService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<DefaultResponse<UserProfile>> register(@RequestBody @Valid UserRegisterRequest register) {
@@ -34,8 +37,6 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<DefaultResponse<JwtTokenResponse>> login(@RequestBody UserLoginRequest login) {
         String token = jwtTokenService.buildToken(authenticationService.authenticate(login));
-        return ResponseEntity.ok().body(DefaultResponse.success(
-            new JwtTokenResponse(token, jwtTokenService.getExpirationTime())
-        ));
+        return ResponseEntity.ok().body(DefaultResponse.success(new JwtTokenResponse(token)));
     }
 }

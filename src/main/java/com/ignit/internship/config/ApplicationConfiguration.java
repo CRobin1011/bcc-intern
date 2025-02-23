@@ -1,33 +1,23 @@
 package com.ignit.internship.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.ignit.internship.model.User;
-import com.ignit.internship.repository.UserRepository;
-import com.ignit.internship.service.ImplUserDetailsService;
+import com.ignit.internship.model.auth.User;
+import com.ignit.internship.repository.auth.UserRepository;
 
 @Configuration
 public class ApplicationConfiguration {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ImplUserDetailsService userDetailsService;
-
-    @Bean
-    UserDetailsService userDetailsService() throws Exception {
-        return userDetailsService;
+    public ApplicationConfiguration(final UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
     
     @Bean
@@ -36,16 +26,8 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
-    AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder);
-        return authenticationProvider;
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
     @Bean

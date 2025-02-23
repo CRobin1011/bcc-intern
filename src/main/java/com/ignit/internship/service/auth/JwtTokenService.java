@@ -1,4 +1,4 @@
-package com.ignit.internship.service;
+package com.ignit.internship.service.auth;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.ignit.internship.model.User;
+import com.ignit.internship.model.auth.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

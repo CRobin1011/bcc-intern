@@ -1,9 +1,12 @@
-package com.ignit.internship.model;
+package com.ignit.internship.model.profile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ignit.internship.model.auth.User;
+import com.ignit.internship.model.community.UserComment;
+import com.ignit.internship.model.community.UserThread;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,6 +30,7 @@ public class UserProfile {
 
     private String fullName;
 
+    @Column(columnDefinition = "text")
     private String description;
 
     @OneToOne(cascade = CascadeType.ALL)

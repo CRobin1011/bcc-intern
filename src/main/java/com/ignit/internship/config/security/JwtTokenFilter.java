@@ -1,10 +1,9 @@
-package com.ignit.internship.config;
+package com.ignit.internship.config.security;
 
 import java.io.IOException;
 import java.time.ZoneOffset;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,9 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import com.ignit.internship.model.User;
-import com.ignit.internship.service.ImplUserDetailsService;
-import com.ignit.internship.service.JwtTokenService;
+import com.ignit.internship.exception.IdNotFoundException;
+import com.ignit.internship.model.auth.User;
+import com.ignit.internship.repository.auth.UserRepository;
+import com.ignit.internship.service.auth.JwtTokenService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -26,14 +26,21 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    ImplUserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    JwtTokenService jwtTokenService;
+    private final JwtTokenService jwtTokenService;
 
-    @Autowired
-    HandlerExceptionResolver handlerExceptionResolver;
+    private final HandlerExceptionResolver handlerExceptionResolver;
+
+    public JwtTokenFilter(
+        final UserRepository userRepository, 
+        final JwtTokenService jwtTokenService,
+        final HandlerExceptionResolver handlerExceptionResolver
+    ) {
+        this.userRepository = userRepository;
+        this.jwtTokenService = jwtTokenService;
+        this.handlerExceptionResolver = handlerExceptionResolver;
+    }
 
     @SuppressWarnings("null")
     @Override
@@ -58,7 +65,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             Long id = Long.parseLong(parsedToken.getId());
             String username = parsedToken.getSubject();
             String email = parsedToken.get("email", String.class);
-            User user = (User) userDetailsService.loadUserByUsername(username);
+            User user = userRepository.findById(id).orElseThrow(() -> new IdNotFoundException("User not found"));
             if (!user.getId().equals(id) || 
                 !user.getUsername().equals(username) ||
                 !user.getEmail().equals(email)

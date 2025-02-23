@@ -1,4 +1,4 @@
-package com.ignit.internship.model;
+package com.ignit.internship.model.community;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,10 +8,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ignit.internship.model.profile.UserProfile;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,14 +21,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class UserThread {
+public class UserComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String title;
-
+    @Column(columnDefinition = "text")
     private String content;
 
     @CreationTimestamp
@@ -36,9 +36,16 @@ public class UserThread {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<UserComment> comments;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private UserThread thread;
+
+    @ManyToOne(optional = true, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private UserComment parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private List<UserComment> replies;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
@@ -50,25 +57,22 @@ public class UserThread {
     }
 
     @SuppressWarnings("unused")
-    private UserThread() {}
+    private UserComment() {}
 
-    public UserThread(String title, String content, UserProfile profile) {
-        this.title = title;
+    public UserComment(String content, UserThread thread, UserProfile profile) {
+        this(content, thread, null, profile);
+    }
+
+    public UserComment(String content, UserThread thread, UserComment parent, UserProfile profile) {
         this.content = content;
-        this.comments = new ArrayList<UserComment>();
+        this.replies = new ArrayList<UserComment>();
+        this.thread = thread;
+        this.parent = parent;
         this.profile = profile;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
@@ -87,11 +91,19 @@ public class UserThread {
         return updatedAt;
     }
 
-    public List<UserComment> getComments() {
-        return comments;
+    public UserThread getThread() {
+        return thread;
     }
 
-    public void addComments(UserComment comment) {
-        this.comments.add(comment);
+    public UserComment getParent() {
+        return parent;
+    }
+
+    public List<UserComment> getReplies() {
+        return replies;
+    }
+
+    public void addReplies(UserComment comment) {
+        this.replies.add(comment);
     }
 }
