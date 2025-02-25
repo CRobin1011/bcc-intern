@@ -1,0 +1,14 @@
+spring.application.name=internship
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/{databaseName}
+spring.datasource.username={databaseUsername}
+spring.datasource.password={databasePassword}
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+security.jwt.secret-key={generate here https://www.devglan.com/online-tools/hmac-sha256-online}
+security.jwt.expiration-time=21600000
+
+springdoc.swagger-ui.path=/api/docs/index.html
+springdoc.api-docs.path=/api/docs

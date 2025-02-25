@@ -2,13 +2,16 @@ package com.ignit.internship.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class UserRegisterRequest {
 
     @NotBlank
+    @Size(min = 5)
     private String username;
 
     @NotBlank
+    @Size(min = 8)
     private String password;
 
     @NotBlank

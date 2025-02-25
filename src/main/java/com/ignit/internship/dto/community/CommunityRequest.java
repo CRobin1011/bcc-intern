@@ -1,12 +1,12 @@
 package com.ignit.internship.dto.community;
 
-public class ThreadCommentRequest {
+public class CommunityRequest {
 
     private String title;
 
     private String content;
 
-    public ThreadCommentRequest(String title, String content) {
+    public CommunityRequest(String title, String content) {
         this.title = title;
         this.content = content;
     }

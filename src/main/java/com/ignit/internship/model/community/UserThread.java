@@ -48,7 +48,7 @@ public class UserThread {
     private List<UserComment> comments;
 
     @JsonProperty
-    private List<UserComment> listComments() {
+    private List<UserComment> comments() {
         return comments.stream().filter((comment) -> {
             return comment.getParent() == null;
         }).toList();
@@ -108,5 +108,13 @@ public class UserThread {
 
     public void addComments(UserComment comment) {
         this.comments.add(comment);
+    }
+
+    public Community getCommunity() {
+        return community;
+    }
+
+    public UserProfile getProfile() {
+        return profile;
     }
 }

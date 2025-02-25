@@ -20,18 +20,21 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
     @Column(columnDefinition = "text")
-    private String description;
+    private String content;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<UserThread> threads;
 
-    public Community(String name, String description) {
-        this.name = name;
-        this.description = description;
+    @SuppressWarnings("unused")
+    private Community() {}
+
+    public Community(String title, String content) {
+        this.title = title;
+        this.content = content;
         this.threads = new ArrayList<UserThread>();
     }
 
@@ -39,20 +42,20 @@ public class Community {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public List<UserThread> getThreads() {

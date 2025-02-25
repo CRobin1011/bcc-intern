@@ -2,7 +2,7 @@ package com.ignit.internship.service.community;
 
 import org.springframework.stereotype.Service;
 
-import com.ignit.internship.dto.community.ThreadCommentRequest;
+import com.ignit.internship.dto.community.CommunityRequest;
 import com.ignit.internship.exception.IdNotFoundException;
 import com.ignit.internship.model.community.Community;
 import com.ignit.internship.model.community.UserComment;
@@ -36,30 +36,101 @@ public class CommunityService {
         this.profileRepository = profileRepository;
     }
 
-    public UserThread postThread(ThreadCommentRequest request, Long communityId, Long profileId) throws IdNotFoundException {
+    public Community createCommunity(CommunityRequest request) {
+        return communityRepository.save(new Community(request.getTitle(), request.getContent()));
+    }
+
+    public Community getCommunity(Long id) throws IdNotFoundException {
+        return communityRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Community not found"));
+    }
+
+    public Iterable<Community> getAllCommunities() {
+        return communityRepository.findAll();
+    }
+
+    public UserThread createThread(
+        CommunityRequest request, 
+        Long communityId, 
+        Long profileId
+    ) throws IdNotFoundException {
         UserProfile profile = profileRepository.findById(profileId).orElseThrow(() -> new IdNotFoundException("Profile not found"));
         Community community = communityRepository.findById(communityId).orElseThrow(() -> new IdNotFoundException("Community not found"));
         UserThread thread = new UserThread(request.getTitle(), request.getContent(), community, profile);
+
         profile.addUserThreads(thread);
+        community.addThread(thread);
+
         return threadRepository.save(thread);
     }
 
-    public UserComment postComment(ThreadCommentRequest request, Long profileId, Long threadId) throws IdNotFoundException {
-        UserProfile profile = profileRepository.findById(profileId).orElseThrow(() -> new IdNotFoundException("Profile not found"));
+    public UserThread getThread(
+        Long communityId, 
+        Long threadId
+    ) throws IdNotFoundException {
         UserThread thread = threadRepository.findById(threadId).orElseThrow(() -> new IdNotFoundException("Thread not found"));
+
+        if (thread.getCommunity().getId() != communityId) throw new IdNotFoundException("Thread not in specified community");
+
+        return thread;
+    }
+
+    public Iterable<UserThread> getAllThreadsByCommunity(Long id) throws IdNotFoundException {
+        Community community = getCommunity(id);
+        return threadRepository.findAllByCommunity(community);
+    }
+
+    public UserComment createComment(
+        CommunityRequest request, 
+        Long communityId, 
+        Long threadId, 
+        Long profileId
+    ) throws IdNotFoundException {
+        UserProfile profile = profileRepository.findById(profileId).orElseThrow(() -> new IdNotFoundException("Profile not found"));
+        UserThread thread = getThread(communityId, threadId);
         UserComment comment = new UserComment(request.getContent(), thread, profile);
+        
         thread.addComments(comment);
         profile.addUserComments(comment);
+
         return commentRepository.save(comment);
     }
 
-    public UserComment postReply(ThreadCommentRequest request, Long profileId, Long threadId, Long commentId) throws IdNotFoundException {
+    public UserComment getComment(
+        Long communityId, 
+        Long threadId, 
+        Long commentId
+    ) throws IdNotFoundException {
+        UserComment comment = commentRepository.findById(commentId).orElseThrow(() -> new IdNotFoundException("Comment not found"));
+
+        if (
+            comment.getThread().getId() != threadId ||
+            comment.getThread().getCommunity().getId() != communityId
+        ) throw new IdNotFoundException("Comment not in specified thread or community");
+
+        return comment;
+    }
+
+    public Iterable<UserComment> getAllCommentsByThread(Long communityId, Long threadId) throws IdNotFoundException {
+        UserThread thread = getThread(communityId, threadId);
+        return commentRepository.findAllByThread(thread);
+    }
+
+    public UserComment createReply(
+        CommunityRequest request, 
+        Long communityId, 
+        Long threadId, 
+        Long commentId, 
+        Long profileId
+    ) throws IdNotFoundException {
         UserProfile profile = profileRepository.findById(profileId).orElseThrow(() -> new IdNotFoundException("Profile not found"));
         UserThread thread = threadRepository.findById(threadId).orElseThrow(() -> new IdNotFoundException("Thread not found"));
-        UserComment parentComment = commentRepository.findById(commentId).orElseThrow(() -> new IdNotFoundException("Comment not found"));
+        UserComment parentComment = getComment(communityId, threadId, commentId);
+
         UserComment comment = new UserComment(request.getContent(), thread, parentComment, profile);
+
         thread.addComments(comment);
         profile.addUserComments(comment);
+
         return commentRepository.save(comment);
     }
 }

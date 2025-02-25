@@ -4,8 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +27,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping
+    @GetMapping("/me")
     public ResponseEntity<DefaultResponse<UserProfile>> getCurrentProfile(
         @CurrentSecurityContext SecurityContext context
     ) throws IdNotFoundException {
@@ -36,11 +36,11 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DefaultResponse<UserProfile>> getProfileById(@PathVariable Long id) throws IdNotFoundException{
+    public ResponseEntity<DefaultResponse<UserProfile>> getProfileById(@PathVariable Long id) throws IdNotFoundException {
         return ResponseEntity.ok().body(DefaultResponse.success(profileService.getProfile(id)));
     }
 
-    @PutMapping
+    @PatchMapping("/me")
     public ResponseEntity<DefaultResponse<UserProfile>> updateProfile(
         @RequestBody ProfileUpdateRequest request,
         @CurrentSecurityContext SecurityContext context
