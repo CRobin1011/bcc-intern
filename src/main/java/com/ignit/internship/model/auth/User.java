@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -48,6 +49,11 @@ public class User implements UserDetails {
 
     private Set<GrantedAuthority> authorities;
 
+    @Column(nullable = false)
+    private boolean enabled;
+
+    private String verificationToken;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @JsonManagedReference
@@ -61,6 +67,8 @@ public class User implements UserDetails {
         this.password = password;
         this.email = email;
         this.authorities = new HashSet<GrantedAuthority>(Set.of(authorities));
+        this.enabled = false;
+        this.verificationToken = UUID.randomUUID().toString();
         this.profile = new UserProfile(this);
     }
 
@@ -109,6 +117,23 @@ public class User implements UserDetails {
 
     public void addAuthorites(GrantedAuthority... authorities) {
         this.authorities.addAll(Set.of(authorities));
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean val) {
+        this.enabled = val;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
     }
 
     public UserProfile getProfile() {

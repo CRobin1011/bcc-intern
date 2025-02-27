@@ -8,7 +8,7 @@ import com.ignit.internship.model.profile.UserProfile;
 import com.ignit.internship.repository.profile.ProfileRepository;
 
 @Service
-public class ProfileService {
+public final class ProfileService {
 
     private final ProfileRepository profileRepository;
 
@@ -23,7 +23,8 @@ public class ProfileService {
     public UserProfile updateProfile(ProfileUpdateRequest request, Long id) throws IdNotFoundException {
         UserProfile profile = profileRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Profile not found"));
         if (request.getFullName() != null) profile.setFullName(request.getFullName());
-        if (request.getDescription() != null) profile.setDescription(request.getDescription());
+        if (request.getLocation() != null) profile.setLocation(request.getLocation());
+        if (request.getSummary() != null) profile.setSummary(request.getSummary());
         return profileRepository.save(profile);
     }
 }

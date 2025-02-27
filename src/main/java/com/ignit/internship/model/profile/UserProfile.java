@@ -30,8 +30,10 @@ public class UserProfile {
 
     private String fullName;
 
+    private String location;
+
     @Column(columnDefinition = "text")
-    private String description;
+    private String summary;
 
     @OneToOne(cascade = CascadeType.ALL)
     @MapsId
@@ -79,12 +81,20 @@ public class UserProfile {
         this.fullName = fullName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getLocation() {
+        return location;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public List<UserThread> getUserThreads() {

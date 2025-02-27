@@ -1,5 +1,7 @@
 package com.ignit.internship.service.community;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.ignit.internship.dto.community.CommunityRequest;
@@ -14,7 +16,7 @@ import com.ignit.internship.repository.community.ThreadRepository;
 import com.ignit.internship.repository.profile.ProfileRepository;
 
 @Service
-public class CommunityService {
+public final class CommunityService {
 
     private final CommunityRepository communityRepository;
 
@@ -44,7 +46,7 @@ public class CommunityService {
         return communityRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Community not found"));
     }
 
-    public Iterable<Community> getAllCommunities() {
+    public List<Community> getAllCommunities() {
         return communityRepository.findAll();
     }
 
@@ -74,7 +76,7 @@ public class CommunityService {
         return thread;
     }
 
-    public Iterable<UserThread> getAllThreadsByCommunity(Long id) throws IdNotFoundException {
+    public List<UserThread> getAllThreadsByCommunity(Long id) throws IdNotFoundException {
         Community community = getCommunity(id);
         return threadRepository.findAllByCommunity(community);
     }
@@ -110,7 +112,7 @@ public class CommunityService {
         return comment;
     }
 
-    public Iterable<UserComment> getAllCommentsByThread(Long communityId, Long threadId) throws IdNotFoundException {
+    public List<UserComment> getAllCommentsByThread(Long communityId, Long threadId) throws IdNotFoundException {
         UserThread thread = getThread(communityId, threadId);
         return commentRepository.findAllByThread(thread);
     }

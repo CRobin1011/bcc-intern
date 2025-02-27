@@ -1,6 +1,7 @@
 package com.ignit.internship.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
@@ -23,7 +24,7 @@ import com.ignit.internship.service.community.CommunityService;
 
 @RestController
 @RequestMapping("/api/communities")
-public class CommunityController {
+public final class CommunityController {
 
     private final CommunityService communityService;
 
@@ -38,7 +39,7 @@ public class CommunityController {
     }
 
     @GetMapping
-    public ResponseEntity<DefaultResponse<Iterable<Community>>> getAllCommunities() {
+    public ResponseEntity<DefaultResponse<List<Community>>> getAllCommunities() {
         return ResponseEntity.ok().body(DefaultResponse.success(communityService.getAllCommunities()));
     }
 
@@ -61,7 +62,7 @@ public class CommunityController {
     }
 
     @GetMapping("/{id}/threads")
-    public ResponseEntity<DefaultResponse<Iterable<UserThread>>> getAllThreadsByCommunity(@PathVariable Long id) throws IdNotFoundException {
+    public ResponseEntity<DefaultResponse<List<UserThread>>> getAllThreadsByCommunity(@PathVariable Long id) throws IdNotFoundException {
         return ResponseEntity.ok().body(DefaultResponse.success(communityService.getAllThreadsByCommunity(id)));
     }
 
@@ -88,7 +89,7 @@ public class CommunityController {
     }
 
     @GetMapping("/{communityId}/threads/{threadId}/comments")
-    public ResponseEntity<DefaultResponse<Iterable<UserComment>>> getAllCommentsByThread(
+    public ResponseEntity<DefaultResponse<List<UserComment>>> getAllCommentsByThread(
         @PathVariable Long communityId,
         @PathVariable Long threadId
     ) throws IdNotFoundException {

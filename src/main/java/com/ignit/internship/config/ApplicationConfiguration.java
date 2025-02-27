@@ -41,6 +41,8 @@ public class ApplicationConfiguration {
                     new SimpleGrantedAuthority("ROLE_USER"),
                     new SimpleGrantedAuthority("ROLE_ADMIN")
                 );
+                admin.setEnabled(true);
+                admin.setVerificationToken(null);
                 userRepository.save(admin);
             }
         };

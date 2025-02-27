@@ -19,7 +19,7 @@ import com.ignit.internship.service.profile.ProfileService;
 
 @RestController
 @RequestMapping("/api/profiles")
-public class ProfileController {
+public final class ProfileController {
 
     private final ProfileService profileService;
 

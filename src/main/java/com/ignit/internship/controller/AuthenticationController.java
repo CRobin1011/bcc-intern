@@ -1,9 +1,12 @@
 package com.ignit.internship.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ignit.internship.dto.DefaultResponse;
@@ -18,7 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthenticationController {
+public final class AuthenticationController {
     
     private final AuthenticationService authenticationService;
 
@@ -35,8 +38,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<DefaultResponse<JwtTokenResponse>> login(@RequestBody UserLoginRequest login) {
+    public ResponseEntity<DefaultResponse<JwtTokenResponse>> login(@RequestBody UserLoginRequest login) throws AuthenticationException {
         String token = jwtTokenService.buildToken(authenticationService.authenticate(login));
         return ResponseEntity.ok().body(DefaultResponse.success(new JwtTokenResponse(token)));
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<DefaultResponse<UserProfile>> verify(@RequestParam String token) throws AuthenticationException {
+        return ResponseEntity.ok().body(DefaultResponse.success(authenticationService.verify(token)));
     }
 }

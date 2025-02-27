@@ -1,6 +1,8 @@
 package com.ignit.internship.service.auth;
 
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,18 +15,22 @@ import com.ignit.internship.model.profile.UserProfile;
 import com.ignit.internship.repository.auth.UserRepository;
 
 @Service
-public class AuthenticationService {
+public final class AuthenticationService {
 
     private final UserRepository userRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final EmailService emailService;
+
     public AuthenticationService(
         final UserRepository userRepository, 
-        final BCryptPasswordEncoder passwordEncoder
+        final BCryptPasswordEncoder passwordEncoder,
+        final EmailService emailService
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     public UserProfile register(UserRegisterRequest register) {
@@ -35,15 +41,36 @@ public class AuthenticationService {
             new SimpleGrantedAuthority("ROLE_USER")
         ));
 
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(registeredUser.getEmail());
+        mailMessage.setSubject("Ignit User Verification");
+        mailMessage.setText("Verify by clicking this link below:\nhttp://localhost:8080/api/auth/verify?token=" + registeredUser.getVerificationToken());
+
+        emailService.sendEmail(mailMessage);
+
         return registeredUser.getProfile();
     }
 
-    public User authenticate(UserLoginRequest login) {
+    public UserProfile verify(String token) throws AuthenticationException {
+        User user = userRepository.findByVerificationToken(token).orElseThrow(() -> new VerifyError("Verification failed"));
+        user.setEnabled(true);
+        user.setVerificationToken(null);
+
+        userRepository.save(user);
+
+        return user.getProfile();
+    }
+
+    public User authenticate(UserLoginRequest login) throws AuthenticationException {
         User user = userRepository.findByUsername(login.getUsername())
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         if (!passwordEncoder.matches(login.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("Password not match");
+        }
+
+        if (!user.isEnabled()) {
+            throw new VerifyError("User not verified");
         }
 
         return user;

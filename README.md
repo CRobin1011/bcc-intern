@@ -16,13 +16,13 @@ Resource used:
 
 4. Open VSCode with the java & maven extension.
 
-4. Search the file `src/main/resources/application.properties.example`.
+5. Search the file `src/main/resources/application.properties.example`.
 
-5. Replace all enclosed with curly bracket with your configuration and save.
+6. Replace all enclosed with curly bracket with your configuration and save.
 
-6. Search the file `src/main/java/com/ignit/internship/InternshipApplication.java`
+7. Search the file `src/main/java/com/ignit/internship/InternshipApplication.java`
 
-7. Run it using VSCode.
+8. Run it using VSCode.
 
 ---
 ## **API DOCS**

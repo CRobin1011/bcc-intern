@@ -4,18 +4,25 @@ public class ProfileUpdateRequest {
 
     private String fullName;
 
-    private String description;
+    private String location;
 
-    public ProfileUpdateRequest(String fullName, String description) {
+    private String summary;
+
+    public ProfileUpdateRequest(String fullName, String location, String summary) {
         this.fullName = fullName;
-        this.description = description;
+        this.location = location;
+        this.summary = summary;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getLocation() {
+        return location;
+    }
+
+    public String getSummary() {
+        return summary;
     }
 }
