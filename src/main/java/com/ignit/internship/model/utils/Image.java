@@ -13,15 +13,29 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+    private String type;
+
     @Lob
     private byte[] data;
 
-    public Image(byte[] data) {
+    public Image(String name, String type, byte[] data) {
+        this.name = name;
+        this.type = type;
         this.data = data;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public byte[] getData() {

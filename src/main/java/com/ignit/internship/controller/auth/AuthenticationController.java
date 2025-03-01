@@ -1,4 +1,4 @@
-package com.ignit.internship.controller;
+package com.ignit.internship.controller.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -38,7 +38,7 @@ public final class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<DefaultResponse<JwtTokenResponse>> login(@RequestBody UserLoginRequest login) throws AuthenticationException {
+    public ResponseEntity<DefaultResponse<JwtTokenResponse>> login(@RequestBody UserLoginRequest login) throws Exception {
         String token = jwtTokenService.buildToken(authenticationService.authenticate(login));
         return ResponseEntity.ok().body(DefaultResponse.success(new JwtTokenResponse(token)));
     }

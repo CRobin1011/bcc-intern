@@ -1,4 +1,4 @@
-package com.ignit.internship.controller;
+package com.ignit.internship.controller.community;
 
 import java.net.URI;
 import java.util.List;

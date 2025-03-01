@@ -61,7 +61,7 @@ public final class AuthenticationService {
         return user.getProfile();
     }
 
-    public User authenticate(UserLoginRequest login) throws AuthenticationException {
+    public User authenticate(UserLoginRequest login) throws Exception {
         User user = userRepository.findByUsername(login.getUsername())
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
@@ -70,7 +70,7 @@ public final class AuthenticationService {
         }
 
         if (!user.isEnabled()) {
-            throw new VerifyError("User not verified");
+            throw new Exception("User not verified");
         }
 
         return user;

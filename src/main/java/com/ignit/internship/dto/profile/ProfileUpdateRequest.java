@@ -1,16 +1,18 @@
 package com.ignit.internship.dto.profile;
 
+import java.util.List;
+
 public class ProfileUpdateRequest {
 
     private String fullName;
 
-    private String location;
+    private List<String> passions;
 
     private String summary;
 
-    public ProfileUpdateRequest(String fullName, String location, String summary) {
+    public ProfileUpdateRequest(String fullName, List<String> passions, String summary) {
         this.fullName = fullName;
-        this.location = location;
+        this.passions = passions;
         this.summary = summary;
     }
 
@@ -18,8 +20,8 @@ public class ProfileUpdateRequest {
         return fullName;
     }
 
-    public String getLocation() {
-        return location;
+    public List<String> getPassions() {
+        return passions;
     }
 
     public String getSummary() {

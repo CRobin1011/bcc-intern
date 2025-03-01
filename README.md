@@ -20,9 +20,11 @@ Resource used:
 
 6. Replace all enclosed with curly bracket with your configuration and save.
 
-7. Search the file `src/main/java/com/ignit/internship/InternshipApplication.java`
+7. Change the file name to `application.properties`.
 
-8. Run it using VSCode.
+8. Search the file `src/main/java/com/ignit/internship/InternshipApplication.java`
+
+9. Run it using VSCode.
 
 ---
 ## **API DOCS**
