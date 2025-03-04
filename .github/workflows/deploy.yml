@@ -26,13 +26,13 @@
 
 #       # Step 4: Build Docker Image
 #       - name: Build Docker image
-#         run: docker build . -t ghcr.io/${{ github.repository }}/intern-bcc:latest 
+#         run: docker build . -t ghcr.io/${{ github.repository }}/ignit:latest 
 
 #       # Step 5: Push ke GHCR
 #       - name: Push Docker image to GHCR
-#         run: docker push ghcr.io/${{ github.repository }}/intern-bcc:latest
+#         run: docker push ghcr.io/${{ github.repository }}/ignit:latest
 
-#       # Step 6: Deploy ke server (misalnya VPS)
+#       # Step 6: Deploy ke server 
 #       - name: SSH Deploy
 #         uses: appleboy/ssh-action@v0.5.8
 #         with:
@@ -42,6 +42,6 @@
 #           passphrase: ${{ secrets.PASSPHRASE }}
 #           port: ${{ secrets.PORT }}
 #           script: |
-#             docker pull ghcr.io/${{ github.repository }}/intern-bcc:latest
+#             docker pull ghcr.io/${{ github.repository }}/ignit:latest
 #             docker-compose down
 #             docker-compose up -d --build
