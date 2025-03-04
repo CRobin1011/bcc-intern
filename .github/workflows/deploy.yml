@@ -20,23 +20,19 @@ jobs:
         with:
           java-version: '17'
 
-      # Step 3: Build JAR pake Maven
-      - name: Build JAR
-        run: mvn clean package -DskipTests
-
-      # Step 4: Login ke GHCR
+      # Step 3: Login ke GHCR
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # Step 5: Build Docker Image
+      # Step 4: Build Docker Image
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}/my-app:latest .
+        run: docker build . -t ghcr.io/${{ github.repository }}/intern-bcc:latest 
 
-      # Step 6: Push ke GHCR
+      # Step 5: Push ke GHCR
       - name: Push Docker image to GHCR
-        run: docker push ghcr.io/${{ github.repository }}/my-app:latest
+        run: docker push ghcr.io/${{ github.repository }}/intern-bcc:latest
 
-      # (Opsional) Step 7: Deploy ke server (misalnya VPS)
+      # Step 6: Deploy ke server (misalnya VPS)
       - name: SSH Deploy
         uses: appleboy/ssh-action@v0.5.8
         with:
@@ -46,7 +42,6 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           port: ${{ secrets.PORT }}
           script: |
-            docker pull ghcr.io/${{ github.repository }}/my-app:latest
-            docker stop my-app || true
-            docker rm my-app || true
-            docker run -d --name my-app -p 8080:8080 ghcr.io/${{ github.repository }}/my-app:latest
+            docker pull ghcr.io/${{ github.repository }}/intern-bcc:latest
+            docker-compose down
+            docker-compose up -d --build
