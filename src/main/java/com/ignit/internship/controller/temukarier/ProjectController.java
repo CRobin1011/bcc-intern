@@ -40,7 +40,6 @@ public class ProjectController {
         @RequestBody ProjectRequest request,
         @CurrentSecurityContext SecurityContext context
     ) throws IdNotFoundException, IOException {
-        System.out.println(request);
         User user = (User) context.getAuthentication().getPrincipal();
         return ResponseEntity.ok().body(DefaultResponse.success(projectService.createProject(request, user.getId())));
     }

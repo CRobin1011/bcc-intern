@@ -78,7 +78,7 @@ public class ProjectService {
     public Project updateProject(ProjectRequest request, Long projectId, Long profileId) throws IdNotFoundException, IOException {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IdNotFoundException("Project not found"));
 
-        if (projectId != profileId) throw new IdNotFoundException("User can only update their own project");
+        if (project.getProfile().getId() != profileId) throw new IdNotFoundException("User can only update their own project");
 
         if (request.getName() != null) project.setName(request.getName());
         if (request.getDescription() != null) project.setDescription(request.getDescription());
