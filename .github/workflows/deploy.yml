@@ -22,7 +22,7 @@
 
 #       # Step 3: Login ke GHCR
 #       - name: Login to GHCR
-#         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+#         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
 #       # Step 4: Build Docker Image
 #       - name: Build Docker image
@@ -39,8 +39,7 @@
 #           host: ${{ secrets.VPS_HOST }}
 #           username: ${{ secrets.VPS_USER }}
 #           key: ${{ secrets.VPS_KEY }}
-#           passphrase: ${{ secrets.PASSPHRASE }}
-#           port: ${{ secrets.PORT }}
+#           port: ${{ secrets.VPS_PORT }}
 #           script: |
 #             docker pull ghcr.io/${{ github.repository }}/ignit:latest
 #             docker-compose down
