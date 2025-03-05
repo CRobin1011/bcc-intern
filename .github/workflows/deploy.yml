@@ -18,14 +18,14 @@ jobs:
       - name: Set up GraalVM JDK 21
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.3.0'
+          version: '23.0.0'
           java-version: 23
           distribution: graalvm
           components: native-image
           java-package: jdk
           check-latest: true
           server-id : github
-          server-username : ${{ github.actor }}
+          server-username : ${{ secrets.GHCR_USERNAME }}
           server-password : ${{ secrets.GHCR_TOKEN }}
           native-image-job-reports: 'true'
 
@@ -33,7 +33,6 @@ jobs:
       - name: Build Native Image Using Maven
         run: | 
           mvn -Pnative native:compile -DskipTests
-          ls -la target/
 
       # Step 4: Upload binary to artifact
       - name: Upload binary
@@ -58,9 +57,10 @@ jobs:
           context: ./
           # Note: tags has to be all lower-case
           tags: |
-            ghcr.io/crobin1011/bcc-intern/ignit:latest
+            ${{ secrets.IMAGE_NAME }}
           # build on feature branches, push only on main branch
-          push: ${{ github.ref == 'refs/heads/master' }}
+          push: ${{ github.ref_name == 'master' }}
+          cache-from: type=registry,ref=${{ secrets.IMAGE_NAME }}
 
       # Step 8: Deploy ke server 
       - name: SSH Deploy
@@ -72,7 +72,8 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           script: |
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ghcr.io/crobin1011/bcc-intern/ignit:latest
+            docker pull ${{ secrets.IMAGE_NAME }}
+            docker images | grep '${{ secrets.IMAGE_NAME }}' | grep '<none>' | awk '{print $3}' | xargs docker rmi
             docker compose down
             docker compose up -d --build
     
