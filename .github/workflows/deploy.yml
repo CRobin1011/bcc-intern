@@ -1,76 +1,76 @@
-# name: CI/CD for Spring Boot with GHCR (GraalVM Native)
+name: CI/CD for Spring Boot with GHCR (GraalVM Native)
 
-# on:
-#   push:
-#     branches:
-#       - master
+on:
+  push:
+    branches:
+      - master
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       # Step 1: Checkout kode dari repo
-#       - name: Checkout code
-#         uses: actions/checkout@v3
+    steps:
+      # Step 1: Checkout kode dari repo
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-#       # Step 2: Set up GraalVM JDK
-#       - name: Set up GraalVM JDK 21
-#         uses: graalvm/setup-graalvm@v1
-#         with:
-#           version: '22.3.0'
-#           java-version: 23
-#           distribution: graalvm
-#           components: native-image
-#           java-package: jdk
-#           check-latest: true
-#           server-id : github
-#           server-username : ${{ github.actor }}
-#           server-password : ${{ secrets.GHCR_TOKEN }}
-#           native-image-job-reports: 'true'
+      # Step 2: Set up GraalVM JDK
+      - name: Set up GraalVM JDK 21
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.3.0'
+          java-version: 23
+          distribution: graalvm
+          components: native-image
+          java-package: jdk
+          check-latest: true
+          server-id : github
+          server-username : ${{ github.actor }}
+          server-password : ${{ secrets.GHCR_TOKEN }}
+          native-image-job-reports: 'true'
 
-#       # Step 3: Build Native Image
-#       - name: Build Native Image Using Maven
-#         run: | 
-#           mvn -Pnative native:compile -DskipTests
-#           ls -la target/
+      # Step 3: Build Native Image
+      - name: Build Native Image Using Maven
+        run: | 
+          mvn -Pnative native:compile -DskipTests
+          ls -la target/
 
-#       # Step 4: Upload binary to artifact
-#       - name: Upload binary
-#         uses: actions/upload-artifact@v4
-#         with:
-#           path: target/internship
+      # Step 4: Upload binary to artifact
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          path: target/internship
 
-#       # Step 5 : Build Container
-#       - name: Set up Container Buildx
-#         id: buildx
-#         uses: docker/setup-buildx-action@v2
+      # Step 5 : Build Container
+      - name: Set up Container Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
 
-#       # Step 6: Login ke GHCR
-#       - name: Login to GHCR
-#         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      # Step 6: Login ke GHCR
+      - name: Login to GHCR
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-#       # Step 7 : Build and Push Docker Image to GHCR
-#       - name: Build image and push to GitHub Container Registry
-#         uses: docker/build-push-action@v3
-#         with:
-#           # Relative path to the place where source code with Dockerfile is located
-#           context: ./
-#           # Note: tags has to be all lower-case
-#           tags: |
-#             ghcr.io/ignit:latest
-#           # build on feature branches, push only on main branch
-#           push: ${{ github.ref == 'refs/heads/master' }}
+      # Step 7 : Build and Push Docker Image to GHCR
+      - name: Build image and push to GitHub Container Registry
+        uses: docker/build-push-action@v3
+        with:
+          # Relative path to the place where source code with Dockerfile is located
+          context: ./
+          # Note: tags has to be all lower-case
+          tags: |
+            ghcr.io/ignit:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/master' }}
 
-#       # Step 8: Deploy ke server 
-#       - name: SSH Deploy
-#         uses: appleboy/ssh-action@v1.2.1
-#         with:
-#           host: ${{ secrets.VPS_HOST }}
-#           username: ${{ secrets.VPS_USER }}
-#           password: ${{ secrets.VPS_PASSWORD }}
-#           port: ${{ secrets.VPS_PORT }}
-#           script: |
-#             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-#             docker pull ghcr.io/ignit:latest
+      # Step 8: Deploy ke server 
+      - name: SSH Deploy
+        uses: appleboy/ssh-action@v1.2.1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker pull ghcr.io/ignit:latest
     
