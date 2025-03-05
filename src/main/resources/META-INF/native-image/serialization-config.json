@@ -2,5 +2,8 @@
   {
     "name": "org.springframework.security.core.authority.SimpleGrantedAuthority",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "java.lang.String"
   }
 ]
