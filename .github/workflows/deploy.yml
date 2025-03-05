@@ -38,7 +38,7 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          path: target/ignit
+          path: target/internship
 
       - name: Set up Container Buildx
         id: buildx
