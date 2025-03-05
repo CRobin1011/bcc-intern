@@ -71,6 +71,6 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            docker pull ghcr.io/crobin1011/intern-bcc/ignit:latest
+            docker pull ghcr.io/crobin1011/bcc-intern/ignit:latest
             docker compose down
             docker compose up -d --build
