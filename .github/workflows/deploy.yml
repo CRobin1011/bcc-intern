@@ -33,11 +33,11 @@ jobs:
 
       # Step 4: Build Docker Image
       - name: Build Docker image
-        run: docker build . -t ghcr.io/${{ github.repository }}/ignit:latest 
+        run: docker build . -t ghcr.io/crobin1011/bcc-intern/ignit:latest 
 
       # Step 5: Push ke GHCR
       - name: Push Docker image to GHCR
-        run: docker push ghcr.io/${{ github.repository }}/ignit:latest
+        run: docker push ghcr.io/crobin1011/bcc-intern/ignit:latest
 
       # Step 6: Deploy ke server 
       - name: SSH Deploy
