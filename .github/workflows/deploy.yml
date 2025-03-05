@@ -48,13 +48,16 @@ jobs:
       - name: Login to GHCR
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # Step 6: Build Docker Image (Multistage)
-      - name: Build Docker image
-        run: docker build . -t ghcr.io/crobin1011/bcc-intern/ignit:latest
-
-      # Step 7: Push ke GHCR
-      - name: Push Docker image to GHCR
-        run: docker push ghcr.io/crobin1011/bcc-intern/ignit:latest
+      - name: Build image and push to GitHub Container Registry
+        uses: docker/build-push-action@v3
+        with:
+          # Relative path to the place where source code with Dockerfile is located
+          context: ./
+          # Note: tags has to be all lower-case
+          tags: |
+            ghcr.io/crobin1011/bcc-intern/ignit:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/master' }}
 
       # Step 8: Deploy ke server 
       - name: SSH Deploy
