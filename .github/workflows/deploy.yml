@@ -34,9 +34,9 @@ jobs:
         run: mvn -Pnative native:compile
 
       - name: Upload binary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          path: target/actions-demo
+          path: target/ignit
 
       - name: Set up Container Buildx
         id: buildx
