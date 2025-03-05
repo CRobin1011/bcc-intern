@@ -1,21 +1,6 @@
 version: "3.8"
 
 services:
-  postgres:
-    container_name: "postgres"
-    image: postgres:17-alpine
-    ports:
-      - "${DB_PORT}:5432"
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - ignit
-      
   ignit:
     container_name: "ignit_service"
     build:
@@ -27,13 +12,13 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASSWORD}
     ports:
-      - "${PORT}:${PORT}"
+      - "3002:${PORT}"
     networks:
       - ignit
-      depends_on:
-      - postgres
-
+      - postgres_network
 networks:
-  intern_bcc:
+  ignit:
     name: ignit
     driver: bridge
+  postgres_network:
+    external: true
