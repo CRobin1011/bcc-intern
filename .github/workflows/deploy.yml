@@ -58,7 +58,7 @@ jobs:
           context: ./
           # Note: tags has to be all lower-case
           tags: |
-            ghcr.io/ignit:latest
+            ghcr.io/crobin1011/bcc-intern/ignit:latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/master' }}
 
@@ -72,5 +72,5 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           script: |
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ghcr.io/ignit:latest
+            docker pull ghcr.io/crobin1011/bcc-intern/ignit:latest
     
