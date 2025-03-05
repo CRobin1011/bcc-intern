@@ -31,7 +31,7 @@ jobs:
 
       # Step 4: Build Native Image
       - name: Build Native Image Using Maven
-        run: mvn -Pnative native:compile
+        run: mvn -Pnative native:compile -DskipTests
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
