@@ -1,13 +1,13 @@
 spring.application.name=internship
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/${DB_NAME}
-spring.datasource.username=${DB_USER}
-spring.datasource.password=${DB_PASSWORD}
+spring.datasource.url=jdbc:postgresql://localhost:5432/${{ secrets.DB_NAME }}
+spring.datasource.username=${{ secrets.DB_USER }}
+spring.datasource.password=${{ secrets.DB_PASSWORD }}
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 
-security.jwt.secret-key=${JWT_SECRET_KEY}
+security.jwt.secret-key=${{ secrets.JWT_SECRET_KEY}}
 security.jwt.expiration-time=21600000
 
 base.url={baseUrl}
@@ -17,8 +17,8 @@ springdoc.api-docs.path=/api/docs
 
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username=${EMAIL}
-spring.mail.password=${EMAIL_PASSWORD}
+spring.mail.username=${{ secrets.EMAIL }}
+spring.mail.password=${{ secrets.EMAIL_PASSWORD }}
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 
