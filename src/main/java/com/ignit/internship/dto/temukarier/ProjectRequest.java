@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ignit.internship.dto.utils.ImageRequest;
 import com.ignit.internship.enums.ProjectStatus;
 
 public class ProjectRequest {
@@ -12,11 +13,7 @@ public class ProjectRequest {
 
     private String description;
 
-    private String imageName;
-
-    private String imageType;
-
-    private String imageData;
+    private ImageRequest imageRequest;
 
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime deadline;
@@ -28,18 +25,14 @@ public class ProjectRequest {
     public ProjectRequest(
         String name, 
         String description, 
-        String imageName,
-        String imageType,        
-        String imageData,
+        ImageRequest imageRequest,
         LocalDateTime deadline, 
         ProjectStatus status, 
         List<String> tags
     ) {
         this.name = name;
         this.description = description;
-        this.imageName = imageName;
-        this.imageType = imageType;
-        this.imageData = imageData;
+        this.imageRequest = imageRequest;
         this.deadline = deadline;
         this.status = status;
         this.tags = tags;
@@ -53,16 +46,8 @@ public class ProjectRequest {
         return description;
     }
 
-    public String getImageName() {
-        return imageName;
-    }
-
-    public String getImageType() {
-        return imageType;
-    }
-
-    public String getImageData() {
-        return imageData;
+    public ImageRequest getImageRequest() {
+        return imageRequest;
     }
 
     public LocalDateTime getDeadline() {

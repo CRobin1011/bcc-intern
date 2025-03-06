@@ -1,10 +1,10 @@
 package com.ignit.internship.dto.utils;
 
-public class TagCreateRequest {
+public class TagRequest {
 
     private String name;
 
-    public TagCreateRequest(String name) {
+    public TagRequest(String name) {
         this.name = name;
     }
 

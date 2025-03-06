@@ -49,7 +49,7 @@ public class BootcampService {
             throw new IdNotFoundException("Tag not found");
         }
 
-        Image image = imageService.uploadImage(request.getImageName(), request.getImageType(), request.getImageData());
+        Image image = imageService.uploadImage(request.getImageRequest());
 
         return bootcampRepository.save(new Bootcamp(
             request.getName(), 
@@ -63,15 +63,15 @@ public class BootcampService {
     public Bootcamp updateBootcamp(BootcampRequest request, Long id) throws IdNotFoundException, IOException {
         Bootcamp bootcamp = bootcampRepository.findById(id).orElseThrow(() -> new IdNotFoundException("bootcamp not found"));
 
-        if (request.getName() != null) bootcamp.setName(request.getName());
-        if (request.getDescription() != null) bootcamp.setDescription(request.getDescription());
-        if (request.getImageName() != null && request.getImageType() != null && request.getImageData() != null) {
+        bootcamp.setName(request.getName());
+        bootcamp.setDescription(request.getDescription());
+        if (request.getImageRequest() != null) {
             imageService.deleteImage(bootcamp.getId());
-            Image image = imageService.uploadImage(request.getImageName(), request.getImageType(), request.getImageData());
+            Image image = imageService.uploadImage(request.getImageRequest());
             bootcamp.setImageId(image.getId());    
         }
-        if (request.getUrl() != null) bootcamp.setUrl(request.getUrl());
-        if (request.getTags() != null) bootcamp.setTags(tagRepository.findAllById(request.getTags()));
+        bootcamp.setUrl(request.getUrl());
+        bootcamp.setTags(tagRepository.findAllById(request.getTags()));
 
         return bootcampRepository.save(bootcamp);
     }

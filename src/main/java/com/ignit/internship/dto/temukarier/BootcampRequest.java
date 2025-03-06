@@ -2,6 +2,8 @@ package com.ignit.internship.dto.temukarier;
 
 import java.util.List;
 
+import com.ignit.internship.dto.utils.ImageRequest;
+
 public class BootcampRequest {
 
     private String name;
@@ -10,11 +12,7 @@ public class BootcampRequest {
 
     private String url;
 
-    private String imageName;
-
-    private String imageType;
-
-    private String imageData;
+    private ImageRequest imageRequest;
 
     private List<String> tags;
 
@@ -30,9 +28,6 @@ public class BootcampRequest {
         this.name = name;
         this.description = description;
         this.url = url;
-        this.imageName = imageName;
-        this.imageType = imageType;
-        this.imageData = imageData;
         this.tags = tags;
     }
 
@@ -48,16 +43,8 @@ public class BootcampRequest {
         return url;
     }   
 
-    public String getImageName() {
-        return imageName;
-    }
-
-    public String getImageType() {
-        return imageType;
-    }
-
-    public String getImageData() {
-        return imageData;
+    public ImageRequest getImageRequest() {
+        return imageRequest;
     }
 
     public List<String> getTags() {

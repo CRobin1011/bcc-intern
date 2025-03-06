@@ -26,9 +26,9 @@ public final class ProfileService {
 
     public UserProfile updateProfile(ProfileUpdateRequest request, Long id) throws IdNotFoundException {
         UserProfile profile = profileRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Profile not found"));
-        if (request.getFullName() != null) profile.setFullName(request.getFullName());
-        if (request.getPassions() != null) profile.setPassions(request.getPassions());
-        if (request.getSummary() != null) profile.setSummary(request.getSummary());
+        profile.setFullName(request.getFullName());
+        profile.setPassions(request.getPassions());
+        profile.setSummary(request.getSummary());
         return profileRepository.save(profile);
     }
 

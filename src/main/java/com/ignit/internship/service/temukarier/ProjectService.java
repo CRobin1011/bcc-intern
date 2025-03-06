@@ -56,7 +56,7 @@ public class ProjectService {
             throw new IdNotFoundException("Tag not found");
         }
 
-        Image image = imageService.uploadImage(request.getImageName(), request.getImageType(), request.getImageData());
+        Image image = imageService.uploadImage(request.getImageRequest());
         
         UserProfile profile = profileRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Profile not found"));
 
@@ -80,16 +80,16 @@ public class ProjectService {
 
         if (project.getProfile().getId() != profileId) throw new IdNotFoundException("User can only update their own project");
 
-        if (request.getName() != null) project.setName(request.getName());
-        if (request.getDescription() != null) project.setDescription(request.getDescription());
-        if (request.getImageName() != null && request.getImageType() != null && request.getImageData() != null) {
+        project.setName(request.getName());
+        project.setDescription(request.getDescription());
+        if (request.getImageRequest() != null) {
             imageService.deleteImage(project.getId());
-            Image image = imageService.uploadImage(request.getImageName(), request.getImageType(), request.getImageData());
+            Image image = imageService.uploadImage(request.getImageRequest());
             project.setImageId(image.getId());
         }
-        if (request.getDeadline() != null) project.setStatus(request.getStatus());
-        if (request.getStatus() != null) project.setDeadline(request.getDeadline());
-        if (request.getTags() != null) project.setTags(tagRepository.findAllById(request.getTags()));
+        project.setStatus(request.getStatus());
+        project.setDeadline(request.getDeadline());
+        project.setTags(tagRepository.findAllById(request.getTags()));
 
         return projectRepository.save(project);
     }

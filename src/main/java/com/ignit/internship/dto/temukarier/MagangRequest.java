@@ -2,6 +2,8 @@ package com.ignit.internship.dto.temukarier;
 
 import java.util.List;
 
+import com.ignit.internship.dto.utils.ImageRequest;
+
 public class MagangRequest {
 
     private String name;
@@ -15,6 +17,8 @@ public class MagangRequest {
     private String imageType;
 
     private String imageData;
+
+    private ImageRequest imageRequest;
 
     private List<String> tags;
 
@@ -58,6 +62,10 @@ public class MagangRequest {
 
     public String getImageData() {
         return imageData;
+    }
+
+    public ImageRequest getImageRequest() {
+        return imageRequest;
     }
 
     public List<String> getTags() {

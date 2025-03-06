@@ -1,12 +1,17 @@
 {"properties": [
-    {
-        "name": "security.jwt.secret-key",
-        "type": "java.lang.String",
-        "description": "Jwt Secret Key"
-    },
-    {
-        "name": "security.jwt.expiration-time",
-        "type": "java.lang.String",
-        "description": "Jwt Expiration Time"
-    }
+  {
+    "name": "security.jwt.secret-key",
+    "type": "java.lang.String",
+    "description": "Jwt Secret Key"
+  },
+  {
+    "name": "security.jwt.expiration-time",
+    "type": "java.lang.String",
+    "description": "Jwt Expiration Time"
+  },
+  {
+    "name": "base.url",
+    "type": "java.lang.String",
+    "description": "Base api url"
+  }
 ]}

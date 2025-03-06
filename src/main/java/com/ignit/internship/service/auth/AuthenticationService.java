@@ -1,5 +1,6 @@
 package com.ignit.internship.service.auth;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -23,6 +24,9 @@ public final class AuthenticationService {
 
     private final EmailService emailService;
 
+    @Value("${base.url}")
+    private String baseUrl;
+
     public AuthenticationService(
         final UserRepository userRepository, 
         final BCryptPasswordEncoder passwordEncoder,
@@ -44,7 +48,7 @@ public final class AuthenticationService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(registeredUser.getEmail());
         mailMessage.setSubject("Ignit User Verification");
-        mailMessage.setText("Verify by clicking this link below:\nhttp://localhost:8080/api/auth/verify?token=" + registeredUser.getVerificationToken());
+        mailMessage.setText("Verify by clicking this link below:\n" + baseUrl + "/api/auth/verify?token=" + registeredUser.getVerificationToken());
 
         emailService.sendEmail(mailMessage);
 

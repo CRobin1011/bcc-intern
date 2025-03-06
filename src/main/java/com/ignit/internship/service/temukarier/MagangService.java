@@ -50,7 +50,7 @@ public class MagangService {
             throw new IdNotFoundException("Tag not found");
         }
 
-        Image image = imageService.uploadImage(request.getImageName(), request.getImageType(), request.getImageData());
+        Image image = imageService.uploadImage(request.getImageRequest());
 
         return magangRepository.save(new Magang(
             request.getName(), 
@@ -64,15 +64,15 @@ public class MagangService {
     public Magang updateMagang(MagangRequest request, Long id) throws IdNotFoundException, IOException {
         Magang magang = magangRepository.findById(id).orElseThrow(() -> new IdNotFoundException("Magang not found"));
 
-        if (request.getName() != null) magang.setName(request.getName());
-        if (request.getDescription() != null) magang.setDescription(request.getDescription());
-        if (request.getImageName() != null && request.getImageType() != null && request.getImageData() != null) {
+        magang.setName(request.getName());
+        magang.setDescription(request.getDescription());
+        if (request.getImageRequest() != null) {
             imageService.deleteImage(magang.getId());
-            Image image = imageService.uploadImage(request.getImageName(), request.getImageType(), request.getImageData());
+            Image image = imageService.uploadImage(request.getImageRequest());
             magang.setImageId(image.getId());    
         }
-        if (request.getUrl() != null) magang.setUrl(request.getUrl());
-        if (request.getTags() != null) magang.setTags(tagRepository.findAllById(request.getTags()));
+        magang.setUrl(request.getUrl());
+        magang.setTags(tagRepository.findAllById(request.getTags()));
 
         return magangRepository.save(magang);
     }
