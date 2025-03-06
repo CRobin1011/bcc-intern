@@ -29,8 +29,8 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(
                 request -> request
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/docs/**").permitAll()
+                    .requestMatchers("/alex/api/auth/**").permitAll()
+                    .requestMatchers("/alex/api/docs/**").permitAll()
                     .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
