@@ -28,13 +28,13 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(
                 request -> request
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/docs/**").permitAll()
-                    .anyRequest().authenticated()
+                    //.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    //.requestMatchers("/api/auth/**").permitAll()
+                    //.requestMatchers("/api/docs/**").permitAll()
+                    .anyRequest().permitAll()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            //.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .build();
     }
