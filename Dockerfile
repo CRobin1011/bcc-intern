@@ -1,5 +1,5 @@
-FROM ghcr.io/oracle/oraclelinux:9-slim
+FROM eclipse-temurin:23-jre-alpine
 
-COPY target/internship app
+COPY target/internship-0.0.1-SNAPSHOT.jar /app.jar
 
-ENTRYPOINT ["/app"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]\
