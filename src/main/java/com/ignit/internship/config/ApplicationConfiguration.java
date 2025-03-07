@@ -9,10 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
-import org.springdoc.core.SwaggerUiConfigParameters;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import com.ignit.internship.model.auth.User;
 import com.ignit.internship.repository.auth.UserRepository;
 
@@ -23,13 +19,6 @@ public class ApplicationConfiguration {
 
     public ApplicationConfiguration(final UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    @Bean
-    public SwaggerUiConfigParameters swaggerUiConfigParameters() {
-        SwaggerUiConfigParameters parameters = new SwaggerUiConfigParameters();
-        parameters.setConfigUrl("/alex/api/docs/swagger-config");
-        return parameters;
     }
  
     @Bean
