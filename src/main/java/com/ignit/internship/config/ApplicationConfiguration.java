@@ -28,7 +28,7 @@ public class ApplicationConfiguration {
     @Bean
     public SwaggerUiConfigParameters swaggerUiConfigParameters() {
         SwaggerUiConfigParameters parameters = new SwaggerUiConfigParameters();
-        parameters.setConfigUrl("/something/api/docs/swagger-config");
+        parameters.setConfigUrl("/alex/api/docs/swagger-config");
         return parameters;
     }
  
