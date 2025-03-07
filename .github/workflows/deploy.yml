@@ -54,4 +54,8 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_PORT }}
           script: |
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker pull ${{ secrets.IMAGE_NAME }}
+            docker compose down
+            docker compose up -d --build
             docker images | grep '${{ secrets.IMAGE_NAME }}' | grep '<none>' | awk '{print $3}' | xargs --no-run-if-empty docker rmi
